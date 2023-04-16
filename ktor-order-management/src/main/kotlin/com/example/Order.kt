@@ -2,11 +2,15 @@ package com.example
 
 import org.jetbrains.exposed.sql.*
 
-data class Order(val id: Int, val name: String)
+data class Order(val id: Int, val customerId: Int, val state: OrderState)
 
 object Orders : Table() {
     val id = integer("id").autoIncrement()
-    val name = varchar("name", 128)
+    val customerId = integer("customerId")
+    val state = enumerationByName<OrderState>("state", 50)
 
-    override val primaryKey = PrimaryKey(id)
+}
+
+enum class OrderState {
+    CREATED, PAID, IN_FULFILLMENT, CLOSED
 }
