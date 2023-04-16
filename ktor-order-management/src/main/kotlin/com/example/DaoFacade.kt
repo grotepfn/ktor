@@ -34,7 +34,14 @@ class DaoFacade {
     }
 
 
-    suspend fun updateOrder(id: Int, state: OrderState) {
+    suspend fun getPaidOrders(): List<Order> = dbQuery {
+        Orders
+            .select { Orders.state eq OrderState.PAID }
+            .map(::resultRowToOrder)
+    }
+
+
+    fun updateOrder(id: Int, state: OrderState) {
         transaction {
             Orders.update({ Orders.id eq id }) {
                 it[Orders.state] = state

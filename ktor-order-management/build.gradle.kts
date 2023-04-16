@@ -7,6 +7,7 @@ val h2_version = "2.1.214"
 plugins {
     kotlin("jvm") version "1.8.20"
     id("io.ktor.plugin") version "2.2.4"
+    kotlin("plugin.serialization")version "1.8.20"
 }
 
 group = "com.example"
@@ -31,7 +32,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
-    implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
 
 
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
@@ -44,5 +46,7 @@ dependencies {
     implementation("io.ktor:ktor-client-cio:$ktor_version")
 
     implementation("io.ktor:ktor-client-json:$ktor_version")
+
+    implementation("io.ktor:ktor-serialization:$ktor_version")
 
 }
