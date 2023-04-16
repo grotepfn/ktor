@@ -12,6 +12,10 @@ class Service(
 ) {
 
 
+    suspend fun getOrders(): List<Order> {
+        return dao.allOrders()
+    }
+
     suspend fun getFulfillment(): Boolean {
         val client = HttpClient(CIO) {
             install(ContentNegotiation) {
@@ -40,7 +44,12 @@ class Service(
     }
 
 
+    suspend fun addNewOrder(orderDto: OrderDto) {
+        dao.addNewOrder(orderDto.customerId)
+    }
+
     fun processPayment(paymentDto: PaymentDto) {
+
 
         if (paymentDto.success) {
             dao.updateOrder(paymentDto.orderId, OrderState.PAID)

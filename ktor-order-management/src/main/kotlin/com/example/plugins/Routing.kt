@@ -20,12 +20,12 @@ fun Application.configureRouting(
     routing {
         post("/orders") {
             val orderDto = call.receive(OrderDto::class)
-            val order = dao.addNewOrder(orderDto.customerId)
+            val order = service.addNewOrder(orderDto)
             call.respond(order!!)
         }
 
         get("/orders") {
-            call.respond(dao.allOrders())
+            call.respond(service.getOrders())
         }
 
         post("/orders/payment") {

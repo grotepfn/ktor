@@ -49,4 +49,11 @@ dependencies {
 
     implementation("io.ktor:ktor-serialization:$ktor_version")
 
+
+    testImplementation("org.mockito:mockito-core:3.3.3")
+
+    testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
+    testImplementation("io.mockk:mockk:1.9.3")
+
+    testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlin_version")
 }
