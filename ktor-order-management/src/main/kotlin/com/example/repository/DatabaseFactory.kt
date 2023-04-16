@@ -1,6 +1,7 @@
-package com.example
+package com.example.repository
 
 
+import com.example.model.Orders
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils

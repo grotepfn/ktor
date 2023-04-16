@@ -1,5 +1,7 @@
-package com.example
+package com.example.plugins
 
+import com.example.dao
+import com.example.model.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -14,6 +16,10 @@ class Service(
 
     suspend fun getOrders(): List<Order> {
         return dao.allOrders()
+    }
+
+    suspend fun getOrderById(id : Int): Order?{
+        return dao.findOrderById(id)
     }
 
     suspend fun getFulfillment(): Boolean {
@@ -44,8 +50,8 @@ class Service(
     }
 
 
-    suspend fun addNewOrder(orderDto: OrderDto) {
-        dao.addNewOrder(orderDto.customerId)
+    suspend fun addNewOrder(orderDto: OrderDto): Order? {
+        return dao.addNewOrder(orderDto.customerId)
     }
 
     fun processPayment(paymentDto: PaymentDto) {

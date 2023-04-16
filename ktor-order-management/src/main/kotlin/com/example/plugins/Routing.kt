@@ -1,6 +1,9 @@
 package com.example.plugins
 
-import com.example.*
+import com.example.model.FulfillmentDto
+import com.example.model.OrderDto
+import com.example.model.OrderState
+import com.example.model.PaymentDto
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -31,22 +34,22 @@ fun Application.configureRouting(
         post("/orders/payment") {
             val paymentDto = call.receive(PaymentDto::class)
 
-            val order = dao.findOrderById(paymentDto.orderId)
+            val order = service.getOrderById(paymentDto.orderId)
 
             if (order == null || (order != null && order.state != OrderState.CREATED)) {
                 call.respond(HttpStatusCode.BadRequest)
+                return@post
             }
 
             service.processPayment(paymentDto)
 
             //nicht cool
-            call.respond(dao.findOrderById(paymentDto.orderId)!!)
+            call.respond(service.getOrderById(paymentDto.orderId)!!)
         }
 
 
         //callback from external source
         get("/orders/fulfillment") {
-
             call.respond(FulfillmentDto(Random.nextBoolean()))
         }
 

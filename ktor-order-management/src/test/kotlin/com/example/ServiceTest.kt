@@ -1,7 +1,7 @@
 package com.example
 
+import com.example.plugins.Service
 import io.ktor.client.*
-import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4

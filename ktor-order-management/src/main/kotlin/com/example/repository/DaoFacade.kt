@@ -1,8 +1,12 @@
 package com.example
 
-import com.example.DatabaseFactory.dbQuery
+import com.example.model.Order
+import com.example.model.OrderState
+import com.example.model.Orders
+import com.example.repository.DatabaseFactory.dbQuery
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class DaoFacade {
 
@@ -41,9 +45,11 @@ class DaoFacade {
 
 
     fun updateOrder(id: Int, state: OrderState) {
-             Orders.update({ Orders.id eq id }) {
+        transaction {
+            Orders.update({ Orders.id eq id }) {
                 it[Orders.state] = state
             }
+        }
     }
 
 }

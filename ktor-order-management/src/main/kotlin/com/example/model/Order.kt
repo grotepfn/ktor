@@ -1,4 +1,4 @@
-package com.example
+package com.example.model
 
 import org.jetbrains.exposed.sql.*
 
