@@ -1,7 +1,7 @@
 package com.example.plugins
 
 import com.example.dao
-import com.example.model.*
+import com.example.models.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -18,7 +18,7 @@ class Service(
         return dao.allOrders()
     }
 
-    suspend fun getOrderById(id : Int): Order?{
+    suspend fun getOrderById(id: Int): Order? {
         return dao.findOrderById(id)
     }
 
@@ -55,12 +55,9 @@ class Service(
     }
 
     fun processPayment(paymentDto: PaymentDto) {
-
-
         if (paymentDto.success) {
             dao.updateOrder(paymentDto.orderId, OrderState.PAID)
         }
-
     }
 
 

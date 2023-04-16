@@ -1,9 +1,9 @@
 package com.example.plugins
 
-import com.example.model.FulfillmentDto
-import com.example.model.OrderDto
-import com.example.model.OrderState
-import com.example.model.PaymentDto
+import com.example.models.FulfillmentDto
+import com.example.models.OrderDto
+import com.example.models.OrderState
+import com.example.models.PaymentDto
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

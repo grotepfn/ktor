@@ -1,3 +1,3 @@
-package com.example.model
+package com.example.models
 
 data class FulfillmentDto(val success: Boolean)

@@ -1,10 +1,10 @@
 package com.example
 
 //import io.ktor.server.plugins.contentnegotiation.*
-import com.example.model.Order
-import com.example.model.OrderDto
-import com.example.model.OrderState
-import com.example.model.PaymentDto
+import com.example.models.Order
+import com.example.models.OrderDto
+import com.example.models.OrderState
+import com.example.models.PaymentDto
 import com.example.plugins.Service
 import com.example.plugins.configureRouting
 import io.ktor.client.call.*
