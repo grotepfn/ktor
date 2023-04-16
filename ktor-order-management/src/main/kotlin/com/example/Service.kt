@@ -5,9 +5,7 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.serialization.gson.*
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class Service(
     private val client: io.ktor.client.HttpClient
@@ -21,7 +19,6 @@ class Service(
             }
         }
 
-
         val fulfillmentDto: FulfillmentDto = client.get("http://127.0.0.1:8080/orders/fulfillment").body()
 
 
@@ -29,17 +26,24 @@ class Service(
     }
 
 
-    suspend fun fullfilmentBatchProcess()  {
+    suspend fun fullfilmentBatchProcess() {
 
         System.out.println("fullfilment")
 
-        val orders : List<Order> = dao.getPaidOrders();
+        val orders: List<Order> = dao.getPaidOrders();
+
+        for (order in orders) {
+            if (getFulfillment()) {
+                dao.updateOrder(order.id, OrderState.CLOSED)
+            }
+        }
+    }
 
 
-        for(order in orders){
-                if(getFulfillment()){
-                    dao.updateOrder(order.id, OrderState.CLOSED)
-                }
+    fun processPayment(paymentDto: PaymentDto) {
+
+        if (paymentDto.success) {
+            dao.updateOrder(paymentDto.orderId, OrderState.PAID)
         }
 
     }

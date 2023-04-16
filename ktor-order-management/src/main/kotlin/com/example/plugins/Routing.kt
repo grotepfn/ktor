@@ -10,8 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.net.http.HttpClient
-import java.util.*
 import kotlin.random.Random
 
 fun Application.configureRouting(
@@ -26,35 +24,27 @@ fun Application.configureRouting(
             call.respond(order!!)
         }
 
-
         get("/orders") {
             call.respond(dao.allOrders())
         }
 
-
-
         post("/orders/payment") {
             val paymentDto = call.receive(PaymentDto::class)
 
-            val order = dao.order(paymentDto.orderId)
-
+            val order = dao.findOrderById(paymentDto.orderId)
 
             if (order == null || (order != null && order.state != OrderState.CREATED)) {
                 call.respond(HttpStatusCode.BadRequest)
             }
 
+            service.processPayment(paymentDto)
 
-            if (paymentDto.success) {
-                dao.updateOrder(paymentDto.orderId, OrderState.PAID)
-
-            }
-
-
-
-            call.respond(dao.order(paymentDto.orderId)!!)
+            //nicht cool
+            call.respond(dao.findOrderById(paymentDto.orderId)!!)
         }
 
 
+        //callback from external source
         get("/orders/fulfillment") {
 
             call.respond(FulfillmentDto(Random.nextBoolean()))
@@ -74,7 +64,6 @@ fun Application.configureRouting(
 
 
     }
-
 
 
 }

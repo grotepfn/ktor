@@ -3,7 +3,6 @@ package com.example
 import com.example.DatabaseFactory.dbQuery
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
 
 class DaoFacade {
 
@@ -21,12 +20,12 @@ class DaoFacade {
     suspend fun addNewOrder(customerId: Int): Order? = dbQuery {
         val insertStatement = Orders.insert {
             it[Orders.customerId] = customerId
-            it[Orders.state] = OrderState.CREATED
+            it[state] = OrderState.CREATED
         }
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToOrder)
     }
 
-    suspend fun order(id: Int): Order? = dbQuery {
+    suspend fun findOrderById(id: Int): Order? = dbQuery {
         Orders
             .select { Orders.id eq id }
             .map(::resultRowToOrder)
@@ -42,12 +41,9 @@ class DaoFacade {
 
 
     fun updateOrder(id: Int, state: OrderState) {
-        transaction {
-            Orders.update({ Orders.id eq id }) {
+             Orders.update({ Orders.id eq id }) {
                 it[Orders.state] = state
             }
-        }
-
     }
 
 }
