@@ -4,6 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import com.example.plugins.*
+import io.ktor.client.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.plugins.contentnegotiation.*
 
@@ -13,11 +14,10 @@ fun main() {
 }
 
 fun Application.module() {
-    configureRouting()
+    configureRouting(Service(HttpClient()))
     install(ContentNegotiation){
         jackson()
     }
     DatabaseFactory.init()
-    configureRouting()
     //configureTemplating()
 }

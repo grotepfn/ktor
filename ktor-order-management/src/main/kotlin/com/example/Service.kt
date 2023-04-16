@@ -1,23 +1,27 @@
 package com.example
 
-import org.jetbrains.exposed.sql.insert
-import java.net.http.HttpClient
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 
-class Service (
-        private val client = HttpClient(CIO) {
-            install(Logging) {
-                level = LogLevel.INFO
-            }
-        }
+class Service(
+    private val client: io.ktor.client.HttpClient
 ) {
 
 
-    suspend fun getX(): Boolean{
+    suspend fun getFulfillment(): Boolean {
+        val client = HttpClient(CIO){
+            install(JsonFeature)
+        }
 
-       val result: FulfillmentDto =   client.re {
+        val response: HttpResponse = client.get("http://127.0.0.1:8080/orders/fulfillment")
 
-           url("http://127.0.0.1:8080/orders/fulfillment")
-       }
+        val fulfillmentDto: FulfillmentDto = response.body()
 
+        return fulfillmentDto.success
     }
+
+
 }

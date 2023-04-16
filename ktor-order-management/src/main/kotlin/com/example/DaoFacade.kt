@@ -2,11 +2,8 @@ package com.example
 
 import com.example.DatabaseFactory.dbQuery
 import kotlinx.coroutines.runBlocking
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 
 class DaoFacade {
 
@@ -29,9 +26,16 @@ class DaoFacade {
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToOrder)
     }
 
+    suspend fun order(id: Int): Order? = dbQuery {
+        Orders
+            .select { Orders.id eq id }
+            .map(::resultRowToOrder)
+            .singleOrNull()
+    }
+
 
     suspend fun updateOrder(id: Int, state: OrderState) {
-        val updateStaement = transaction {
+        transaction {
             Orders.update({ Orders.id eq id }) {
                 it[Orders.state] = state
             }
